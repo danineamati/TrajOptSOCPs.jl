@@ -1,6 +1,6 @@
 # This file will contain the SOCP TrajOpt Module
 """
-    SOCP_Rocket_TrajOpt
+    TrajOptSOCPs
 
 A native Julia library to solve trajectory optimization problems that
 contain second-order cone constraints.
