@@ -1,8 +1,7 @@
 module TrajectoryOptimizationWithSOCPs
 
 # Write your package code here.
-fCheck(x) = x^2
+include("extra.jl")
 
-export fCheck
 
 end
