@@ -1,0 +1,13 @@
+name = "TrajectoryOptimizationWithSOCPs"
+uuid = "3b508c96-34bb-4989-8222-90dc087bf7b6"
+authors = ["Daniel Neamati"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
