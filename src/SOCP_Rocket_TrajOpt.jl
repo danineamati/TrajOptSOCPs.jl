@@ -10,17 +10,13 @@ Author: Daniel Neamati (Summer 2020)
 Funding graciously provided by Caltech SURF program and the Homer J. Stewart
 Fellowship.
 """
-module TrajOptSOCPs
+module SOCP_Rocket_TrajOpt
 
 using LinearAlgebra, SparseArrays, Plots
 
 # Declare Abstract Types
 abstract type constraint end
 abstract type objectiveFunc end
-
-# Basic Test
-include("extra.jl")
-export fCheck2
 
 # Include all of the files
 include("rocket\\rocket-setup.jl")
