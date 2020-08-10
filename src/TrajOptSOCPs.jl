@@ -1,4 +1,4 @@
-module TrajectoryOptimizationWithSOCPs
+module TrajOptSOCPs
 
 # Write your package code here.
 include("extra.jl")

@@ -1,4 +1,4 @@
-# TrajectoryOptimizationWithSOCPs
+# Trajectory Optimization With SOCPs
 
 [![Build Status](https://travis-ci.com/danineamati/TrajectoryOptimizationWithSOCPs.jl.svg?branch=master)](https://travis-ci.com/danineamati/TrajectoryOptimizationWithSOCPs.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/danineamati/TrajectoryOptimizationWithSOCPs.jl?svg=true)](https://ci.appveyor.com/project/danineamati/TrajectoryOptimizationWithSOCPs-jl)
