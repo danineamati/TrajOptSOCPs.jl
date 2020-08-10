@@ -1,2 +1,2 @@
 
-fCheck2(x) = 2 * x
+fCheck2(x) = x^2
