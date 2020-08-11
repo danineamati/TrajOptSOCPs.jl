@@ -12,7 +12,7 @@ Fellowship.
 """
 module TrajOptSOCPs
 
-using LinearAlgebra, SparseArrays, Plots
+using LinearAlgebra, SparseArrays
 
 # Declare Abstract Types
 abstract type constraint end
@@ -39,10 +39,10 @@ include("solver/QP-AffineEquality-Solver.jl")
 include("other_utils/parsePrimalDual.jl")
 
 include("results/trajectoryParsing.jl")
-include("results/plotTrajectory.jl")
-include("results/plotConstraintViolation.jl")
-include("results/plotObjective.jl")
-include("results/batchPlots.jl")
+# include("results/plotTrajectory.jl")
+# include("results/plotConstraintViolation.jl")
+# include("results/plotObjective.jl")
+# include("results/batchPlots.jl")
 
 # Export Structs
 export augLag, solverParams, constraintManager_Dynamics, LQR_QP_Referenced,
