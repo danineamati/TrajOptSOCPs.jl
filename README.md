@@ -1,9 +1,9 @@
 # Trajectory Optimization With SOCPs
 
-[![Build Status](https://travis-ci.com/danineamati/TrajectoryOptimizationWithSOCPs.jl.svg?branch=master)](https://travis-ci.com/danineamati/TrajectoryOptimizationWithSOCPs.jl)
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/danineamati/TrajectoryOptimizationWithSOCPs.jl?svg=true)](https://ci.appveyor.com/project/danineamati/TrajectoryOptimizationWithSOCPs-jl)
-[![Coverage](https://codecov.io/gh/danineamati/TrajectoryOptimizationWithSOCPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/danineamati/TrajectoryOptimizationWithSOCPs.jl)
-[![Coverage](https://coveralls.io/repos/github/danineamati/TrajectoryOptimizationWithSOCPs.jl/badge.svg?branch=master)](https://coveralls.io/github/danineamati/TrajectoryOptimizationWithSOCPs.jl?branch=master)
+[![Build Status](https://travis-ci.com/danineamati/TrajOptSOCPs.jl.svg?branch=master)](https://travis-ci.com/danineamati/TrajOptSOCPs.jl)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/danineamati/TrajOptSOCPs.jl?svg=true)](https://ci.appveyor.com/project/danineamati/TrajOptSOCPs-jl)
+[![Coverage](https://codecov.io/gh/danineamati/TrajOptSOCPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/danineamati/TrajOptSOCPs.jl)
+[![Coverage](https://coveralls.io/repos/github/danineamati/TrajOptSOCPs.jl/badge.svg?branch=master)](https://coveralls.io/github/danineamati/TrajOptSOCPs.jl?branch=master)
 
 A native Julia library to solve trajectory optimization problems that contain
 second-order cone constraints.
