@@ -15,7 +15,8 @@ makedocs(modules = [TrajOptSOCPs],
                         "(1) Rockets" => "UI/rocket_ui.md",
                         "(2) Objective" => "UI/objective_ui.md",
                         "(3) Constraints" => "UI/constraints_ui.md",
-                        "(4) Augmented Lagrangian" => "UI/augLag_ui.md"
+                        "(4) Augmented Lagrangian" => "UI/augLag_ui.md",
+                        "(5) Solve" => "UI/solver_ui.md"
                   ]
                  ],
          format = Documenter.HTML(prettyurls = false))

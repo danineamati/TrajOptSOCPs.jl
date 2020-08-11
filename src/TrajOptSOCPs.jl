@@ -49,6 +49,6 @@ export augLag, solverParams, constraintManager_Dynamics, LQR_QP_Referenced,
        rocket_simple
 
 # Export Functions
-export ALPrimalNewtonMain, makeLQR_TrajReferenced
+export ALPrimalNewtonMain, makeLQR_TrajReferenced, solParamPrint
 
 end  # module SOCP_TrajOpt
