@@ -24,5 +24,5 @@ makedocs(modules = [TrajOptSOCPs],
 )
 
 deploydocs(
- repo = "github.com/danineamati/TrajOptSOCPs.git",
+ repo = "github.com/danineamati/TrajOptSOCPs.jl.git",
 )
