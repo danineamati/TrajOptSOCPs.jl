@@ -4,7 +4,7 @@
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/danineamati/TrajOptSOCPs.jl?svg=true)](https://ci.appveyor.com/project/danineamati/trajoptsocps-jl)
 [![Coverage](https://codecov.io/gh/danineamati/TrajOptSOCPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/danineamati/TrajOptSOCPs.jl)
 [![Coverage](https://coveralls.io/repos/github/danineamati/TrajOptSOCPs.jl/badge.svg?branch=master)](https://coveralls.io/github/danineamati/TrajOptSOCPs.jl?branch=master)
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://danineamati.github.io/TrajOptSOCPs.jl/)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://danineamati.github.io/TrajOptSOCPs.jl/dev)
 
 A native Julia library to solve trajectory optimization problems that contain
 second-order cone constraints.
