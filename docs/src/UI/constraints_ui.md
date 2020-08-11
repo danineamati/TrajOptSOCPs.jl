@@ -14,3 +14,20 @@ In continuous time, we have a differential equation of the form:
 ```math
 \frac{dx}{dt} = \tilde Ax + \tilde Bu + \tilde C
 ```
+
+We solve this via Matrix exponentiation which yields a discretized equation
+of the form:
+
+```math
+x_{k+1} = A x_k + B u_k + C
+```
+
+Where ``\tilde A \neq A``, ``\tilde B \neq B``, and ``\tilde C \neq C``. To
+formulate this as an Affine Equality constraint, we want to write this in the
+form ``Ax = b``. Thus we rearrange this as
+
+```math
+A x_k + B u_k - I x_{k+1} = -C
+```
+
+The left hand side defines the matrix ``

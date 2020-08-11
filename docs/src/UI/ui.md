@@ -10,4 +10,5 @@ To interface with the solver, please construct the following objects:
 4. The augmented lagrangian
 
 Thereafter, you can solve the problem. This user interface section will guide
-you in creating each of these objects.
+you in creating each of these objects. This guide uses the examples stored in
+the `examples` folder.
