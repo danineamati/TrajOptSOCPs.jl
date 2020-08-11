@@ -1,6 +1,6 @@
 # Plot the total constraint violation of the course of the solver
 
-include("../constraints/constraintManager.jl")
+using TrajOptSOCPs, Plots
 
 function plotConstraintViolation(cM::constraintManager, trajList,
                                  penalty::Float64 = 1.0)

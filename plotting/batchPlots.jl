@@ -1,9 +1,6 @@
 # Generates a batch of plots
 
-include("plotTrajectory.jl")
-include("plotConstraintViolation.jl")
-include("plotObjective.jl")
-include("trajectoryParsing.jl")
+using TrajOptSOCPs
 
 
 function batchPlot(trajStates, cM::constraintManager, nDim::Int64,

@@ -1,6 +1,6 @@
 # Plot the Objective over the course of the solve
 
-include("../objective/QP_Linear_objectives.jl")
+using TrajOptSOCPs, Plots
 
 
 function plotObjective(obj::objectiveFunc, trajList)

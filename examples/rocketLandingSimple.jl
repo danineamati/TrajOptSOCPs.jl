@@ -12,12 +12,20 @@ Units in kg, m, s
 using TrajOptSOCPs
 using LinearAlgebra, SparseArrays
 
-# include("..\\src\\results\\trajectoryParsing.jl")
-# include("..\\src\\results\\plotTrajectory.jl")
-# include("..\\src\\results\\plotConstraintViolation.jl")
-# include("..\\src\\results\\plotObjective.jl")
-# include("..\\src\\results\\batchPlots.jl")
+# If you don't want plotting comment the include and pyplot statements.
+# Then, sent runplots = false
+include("../plotting/plotTrajectory.jl")
+include("../plotting/plotConstraintViolation.jl")
+include("../plotting/plotObjective.jl")
+include("../plotting/batchPlots.jl")
+pyplot()
+runplots = false
+saveplots = false
 
+
+println("\n--------------------------------------------")
+println("          Setting Up Rocket Landing ")
+println("--------------------------------------------")
 
 # Based on the Falcon 9
 # 549,054 kg (Mass)
@@ -137,14 +145,15 @@ else
                                                         size(initTraj, 1))
 end
 
-hDual = heatmap(hcat(trajStatesAllPD[end].duals))
-yflip!()
-ylabel!("Column")
-title!("Dual Vector for Dynamics Constraints")
-display(hDual)
-
 # Blocked so that it can be run independently after the fact
-if true
+if runplots
+
+    hDual = heatmap(hcat(trajStatesAllPD[end].duals))
+    yflip!()
+    ylabel!("Column")
+    title!("Dual Vector for Dynamics Constraints")
+    display(hDual)
+
     # Get the parsed list of trajectories
     nDim = size(grav, 1)
     pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu =
@@ -152,7 +161,7 @@ if true
 end
 
 # Blocked so that it can be run independently after the fact
-if true
+if runplots && saveplots
     header = "MaxThrustNew_" * string(currSolveParams.maxOuterIters) *
              "Outer_" * string(currSolveParams.maxNewtonSteps) * "Newton" *
              string(Int64(rocketStart[4])) * "Vel" * "_"
