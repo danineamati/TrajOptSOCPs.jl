@@ -19,10 +19,9 @@ makedocs(modules = [TrajOptSOCPs],
                         "(5) Solve" => "UI/solver_ui.md"
                   ]
                  ],
-         format = Documenter.HTML(prettyurls = false))
+         format = Documenter.HTML(prettyurls = false)
+)
 
 deploydocs(
  repo = "github.com/danineamati/TrajOptSOCPs.git",
- target = "build",
- push_preview = true,
 )
