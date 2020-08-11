@@ -1,4 +1,4 @@
-import Pkg; Pkg.add("Documenter")
+import Pkg; Pkg.add("Documenter"); Pkg.add("PyPlot")
 using Documenter, TrajOptSOCPs
 
 # push!(LOAD_PATH,"../../")
