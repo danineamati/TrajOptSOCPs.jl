@@ -5,18 +5,26 @@ In this file we simulate a simple rocket landing
 Units in kg, m, s
 
 =#
+include("..\\src\\rocket\\rocket-setup.jl")
+include("..\\src\\rocket\\ground.jl")
+include("..\\src\\rocket\\maxThrust.jl")
 
-# RUN:
-# ] activate TrajOptSOCPs
 
-using TrajOptSOCPs
-using LinearAlgebra, SparseArrays
+include("..\\src\\dynamics\\trajectory-setup.jl")
+include("..\\src\\objective\\LQR_objective.jl")
+include("..\\src\\constraints\\constraintManager.jl")
+include("..\\src\\constraints\\constraintManagerDynamics.jl")
+include("..\\src\\auglag\\auglag-core.jl")
 
-# include("..\\src\\results\\trajectoryParsing.jl")
-# include("..\\src\\results\\plotTrajectory.jl")
-# include("..\\src\\results\\plotConstraintViolation.jl")
-# include("..\\src\\results\\plotObjective.jl")
-# include("..\\src\\results\\batchPlots.jl")
+include("..\\src\\solver\\AL-Primal-Main-Solver.jl")
+include("..\\src\\solver\\QP-AffineEquality-Solver.jl")
+include("..\\src\\other_utils\\parsePrimalDual.jl")
+
+include("..\\src\\results\\trajectoryParsing.jl")
+include("..\\src\\results\\plotTrajectory.jl")
+include("..\\src\\results\\plotConstraintViolation.jl")
+include("..\\src\\results\\plotObjective.jl")
+include("..\\src\\results\\batchPlots.jl")
 
 
 # Based on the Falcon 9

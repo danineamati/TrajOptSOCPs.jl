@@ -11,5 +11,9 @@ second-order cone constraints.
 
 Author: Daniel Neamati (Summer 2020)
 
+Advisor: Prof. Zachary Manchester ([REx Lab at Stanford University](https://rexlab.stanford.edu/))
+
 Funding graciously provided by Caltech SURF program and the Homer J. Stewart
 Fellowship.
+
+See also: [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl)

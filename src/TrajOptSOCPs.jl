@@ -17,6 +17,7 @@ using LinearAlgebra, SparseArrays
 # Declare Abstract Types
 abstract type constraint end
 abstract type objectiveFunc end
+abstract type constraintManager end
 
 # Basic Test
 include("extra.jl")
@@ -44,11 +45,26 @@ include("results/trajectoryParsing.jl")
 # include("results/plotObjective.jl")
 # include("results/batchPlots.jl")
 
-# Export Structs
-export augLag, solverParams, constraintManager_Dynamics, LQR_QP_Referenced,
-       rocket_simple
+# # Export Constraint Structs
+export AL_AffineEquality, AL_AffineInequality,
+        AL_simpleCone, AL_Multiple_simpleCone
 
-# Export Functions
-export ALPrimalNewtonMain, makeLQR_TrajReferenced, solParamPrint
+# Export Top Level Structs
+export augLag, solverParams, constraintManager_Dynamics,
+        LQR_QP_Referenced, rocket_simple
+
+# Export Top Level Functions
+export ALPrimalNewtonMain, solParamPrint,
+        initializeTraj, rocketDynamicsFull
+
+# Export Helper Set-Up Functions
+export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint
+
+# Export Evaluation functions
+export evalConstraints, evalGradConstraints, evalHessConstraints,
+       evalAL, evalGradAL, evalHessAl
+
+# Export Helper Utils
+export parsePrimalDualVec
 
 end  # module SOCP_TrajOpt
