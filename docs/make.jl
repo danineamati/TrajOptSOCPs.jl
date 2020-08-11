@@ -1,5 +1,5 @@
-import Pkg; Pkg.add("Documenter"); Pkg.add("DocumenterTools")
-using Documenter, TrajOptSOCPs, DocumenterTools
+import Pkg; Pkg.add("Documenter")
+using Documenter, TrajOptSOCPs
 
 # push!(LOAD_PATH,"../../")
 # include("..\\src\\TrajOptSOCPs.jl")
