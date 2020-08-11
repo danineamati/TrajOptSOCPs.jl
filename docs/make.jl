@@ -20,3 +20,9 @@ makedocs(modules = [TrajOptSOCPs],
                   ]
                  ],
          format = Documenter.HTML(prettyurls = false))
+
+deploydocs(
+ repo = "github.com/danineamati/TrajOptSOCPs.git",
+ target = "build",
+ push_preview = true,
+)
