@@ -1,9 +1,9 @@
-import Pkg; Pkg.add("Documenter"); Pkg.add("PyPlot")
-using Documenter, TrajOptSOCPs
+import Pkg; Pkg.add("Documenter")
+using Documenter, TrajOptSOCPs, Plots
 
 # push!(LOAD_PATH,"../../")
 # include("..\\src\\TrajOptSOCPs.jl")
-
+pyplot()
 
 # using SolversWithProjections
 
