@@ -1,8 +1,9 @@
 import Pkg; Pkg.add("Documenter")
-using Documenter, TrajOptSOCPs
+using Documenter, TrajOptSOCPs, DocumenterTools
 
 # push!(LOAD_PATH,"../../")
 # include("..\\src\\TrajOptSOCPs.jl")
+DocumenterTools.genkeys(TrajOptSOCPs)
 
 # using SolversWithProjections
 
