@@ -3,7 +3,6 @@ using Documenter, TrajOptSOCPs
 
 # push!(LOAD_PATH,"../../")
 # include("..\\src\\TrajOptSOCPs.jl")
-pyplot()
 
 # using SolversWithProjections
 
