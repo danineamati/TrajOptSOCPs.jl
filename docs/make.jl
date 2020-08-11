@@ -1,5 +1,5 @@
 import Pkg; Pkg.add("Documenter")
-using Documenter, TrajOptSOCPs, Plots
+using Documenter, TrajOptSOCPs
 
 # push!(LOAD_PATH,"../../")
 # include("..\\src\\TrajOptSOCPs.jl")
