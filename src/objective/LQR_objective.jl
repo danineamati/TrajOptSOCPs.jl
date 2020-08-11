@@ -7,7 +7,7 @@ include("QP_Linear_objectives.jl")
 abstract type objectiveLQR_abstract <: objectiveFunc end
 
 """
-    LQR_simple
+    LQR_simple(Q, R)
 
 A simple LQR struct where `Q` and `R` are constant for all `x` and `u`.
 """
@@ -17,7 +17,7 @@ struct LQR_simple <: objectiveLQR_abstract
 end
 
 """
-    LQR_QP
+    LQR_QP(QR_Full)
 
 An LQR what acts like a QP objective function.
 """
@@ -26,7 +26,7 @@ struct LQR_QP <: objectiveLQR_abstract
 end
 
 """
-    LQR_QP
+    LQR_QP(lqr_qp::LQR_QP, xRef)
 
 An LQR what acts like a QP objective function, but with a reference
 trajectory.

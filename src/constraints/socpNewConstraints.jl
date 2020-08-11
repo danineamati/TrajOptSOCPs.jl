@@ -2,7 +2,7 @@
 
 using SparseArrays
 
-include("..\\other_utils\\feasibleCheck.jl")
+include("../other_utils/feasibleCheck.jl")
 include("projections.jl")
 
 

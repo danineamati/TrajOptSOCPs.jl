@@ -2,7 +2,7 @@
 
 using SparseArrays
 
-include("..\\constraints\\constraints.jl")
+include("../constraints/constraints.jl")
 
 
 """

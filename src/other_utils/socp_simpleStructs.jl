@@ -1,6 +1,6 @@
 # SOCP Primal Structs for Simple SOCP problems
 
-include("..\\constraints\\constraints.jl")
+include("../constraints/constraints.jl")
 
 
 

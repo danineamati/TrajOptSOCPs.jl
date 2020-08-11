@@ -2,7 +2,7 @@
 
 using SparseArrays
 
-include("..\\constraints\\constraints.jl")
+include("../constraints/constraints.jl")
 
 """
     makeMaxThrustConstraint(NSteps::Int64, nDim::Int64, tMax::Float64)

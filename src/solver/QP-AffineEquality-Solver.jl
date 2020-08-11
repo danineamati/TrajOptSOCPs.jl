@@ -1,6 +1,6 @@
 # KKT QP with Equality Constraints Solver
 
-include("..\\auglag\\auglag-core.jl")
+include("../auglag/auglag-core.jl")
 
 using SparseArrays
 

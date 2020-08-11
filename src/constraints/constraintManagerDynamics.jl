@@ -1,7 +1,7 @@
 # Dynamically aware constraints manager
 
 include("constraintManager.jl")
-include("..\\objective\\LQR_objective.jl")
+include("../objective/LQR_objective.jl")
 
 
 """

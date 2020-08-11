@@ -9,8 +9,8 @@ It is not abstracted as to handle multiple constraints
 
 using LinearAlgebra
 
-include("..\\auglag\\auglag-core.jl")
-include("..\\auglag\\solverParams.jl")
+include("../auglag/auglag-core.jl")
+include("../auglag/solverParams.jl")
 
 # include("..\\constraints\\constraintManager.jl")
 

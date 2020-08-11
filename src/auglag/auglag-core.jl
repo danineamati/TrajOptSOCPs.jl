@@ -16,9 +16,9 @@
 
 using LinearAlgebra, SparseArrays
 
-include("..\\objective\\QP_Linear_objectives.jl")
-include("..\\constraints\\constraintManager.jl")
-include("..\\other_utils\\utils.jl")
+include("../objective/QP_Linear_objectives.jl")
+include("../constraints/constraintManager.jl")
+include("../other_utils/utils.jl")
 
 
 # --------------------------
