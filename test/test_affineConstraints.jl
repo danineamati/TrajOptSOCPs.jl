@@ -13,6 +13,9 @@ using Test
     # And likewise when it is not on the line
     @test !TrajOptSOCPs.satisfied(dT, 4)
     @test !TrajOptSOCPs.satisfied(dT, 0)
+
+    # Run a simple evaluation
+    @test TrajOptSOCPs.getRaw(dT, 2) == 0
 end
 
 @testset "Affine Equality Constraint" begin
@@ -48,6 +51,11 @@ end
     @test size(gradDT2, 1) == 2
     @test size(hessDT2) == (2, 2)
 
+    # Test the the augmented lagrangian term also works
+    alHess = TrajOptSOCPs.getHessC_ALTerm(dT2, testpt)
+
+    @test size(alHess) == (2, 2)
+
 end
 
 @testset "Affine Inequality Constraint Simple" begin
@@ -62,6 +70,9 @@ end
     @test !TrajOptSOCPs.satisfied(diT, 4)
     # Under the line (true)
     @test TrajOptSOCPs.satisfied(diT, 0)
+
+    # Run a simple evaluation
+    @test TrajOptSOCPs.getRaw(diT, 2) == 0
 end
 
 @testset "Affine Inequality Constraint" begin
@@ -117,5 +128,10 @@ end
     @test size(gradDT2, 1) == 2
     @test size(gradDT22, 1) == 2
     @test size(hessDT2) == (2, 2)
+
+    # Test the the augmented lagrangian term also works
+    alHess = TrajOptSOCPs.getHessC_ALTerm(diT2, testpt)
+
+    @test size(alHess) == (2, 2)
 
 end
