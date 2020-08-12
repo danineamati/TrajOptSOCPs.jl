@@ -65,9 +65,10 @@ export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint
 
 # Export Evaluation functions
 export evalConstraints, evalGradConstraints, evalHessConstraints,
-       evalAL, evalGradAL, evalHessAl
+        evalAL, evalGradAL, evalHessAl, evalAffineEq
 
 # Export Helper Utils
-export parsePrimalDualVec
+export parsePrimalDualVec, getParseTrajectory, splitDimensions,
+        getConstraintViolationList, safeNorm
 
 end  # module SOCP_TrajOpt
