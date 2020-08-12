@@ -7,6 +7,8 @@ contain second-order cone constraints.
 
 Author: Daniel Neamati (Summer 2020)
 
+Advisor: Prof. Zachary Manchester (REx Lab at Stanford University)
+
 Funding graciously provided by Caltech SURF program and the Homer J. Stewart
 Fellowship.
 """
@@ -18,6 +20,9 @@ using LinearAlgebra, SparseArrays
 abstract type constraint end
 abstract type objectiveFunc end
 abstract type constraintManager end
+
+# Export the abstract types
+export constraint, objectiveFunc, constraintManager
 
 # Basic Test
 include("extra.jl")
@@ -38,12 +43,7 @@ include("auglag/auglag-core.jl")
 include("solver/AL-Primal-Main-Solver.jl")
 include("solver/QP-AffineEquality-Solver.jl")
 include("other_utils/parsePrimalDual.jl")
-
-include("results/trajectoryParsing.jl")
-# include("results/plotTrajectory.jl")
-# include("results/plotConstraintViolation.jl")
-# include("results/plotObjective.jl")
-# include("results/batchPlots.jl")
+include("other_utils/trajectoryParsing.jl")
 
 # # Export Constraint Structs
 export AL_AffineEquality, AL_AffineInequality,
@@ -52,6 +52,9 @@ export AL_AffineEquality, AL_AffineInequality,
 # Export Top Level Structs
 export augLag, solverParams, constraintManager_Dynamics,
         LQR_QP_Referenced, rocket_simple
+
+# Export other Helper structs
+export parseTrajectory, primal_dual
 
 # Export Top Level Functions
 export ALPrimalNewtonMain, solParamPrint,
@@ -62,9 +65,10 @@ export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint
 
 # Export Evaluation functions
 export evalConstraints, evalGradConstraints, evalHessConstraints,
-       evalAL, evalGradAL, evalHessAl
+        evalAL, evalGradAL, evalHessAl, evalAffineEq
 
 # Export Helper Utils
-export parsePrimalDualVec
+export parsePrimalDualVec, getParseTrajectory, splitDimensions,
+        getConstraintViolationList, safeNorm
 
 end  # module SOCP_TrajOpt

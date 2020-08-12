@@ -12,12 +12,20 @@ Units in kg, m, s
 using TrajOptSOCPs
 using LinearAlgebra, SparseArrays
 
-# include("..\\src\\results\\trajectoryParsing.jl")
-# include("..\\src\\results\\plotTrajectory.jl")
-# include("..\\src\\results\\plotConstraintViolation.jl")
-# include("..\\src\\results\\plotObjective.jl")
-# include("..\\src\\results\\batchPlots.jl")
+# If you don't want plotting comment the include and pyplot statements.
+# Then, sent runplots = false
+# include("../plotting/plotTrajectory.jl")
+# include("../plotting/plotConstraintViolation.jl")
+# include("../plotting/plotObjective.jl")
+include("../plotting/batchPlots.jl")
+pyplot()
+runplots = true
+saveplots = true
 
+
+println("\n--------------------------------------------")
+println("          Setting Up Rocket Landing ")
+println("--------------------------------------------")
 
 # Based on the Falcon 9
 # 549,054 kg (Mass)
@@ -25,14 +33,14 @@ using LinearAlgebra, SparseArrays
 # select "y" as the vertical
 mass = 1
 isp = 1
-grav = [0; -9.81]
+grav = [0; 0; -9.81]
 deltaTime = 1
 rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 20.0; 0.0; -45.0]
-const rocketEnd = [0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
+const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -15.0]
+const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
 
@@ -42,7 +50,7 @@ const NSteps = 60
 initTraj = initializeTraj(rocketStart, rocketEnd, uHover, uHover, NSteps)
 
 # Use a Linear Quadratic Regulator as the cost function
-const lqrQMat = 0.0001 * Diagonal(I, size(rocketStart, 1))
+const lqrQMat = 0.0 * Diagonal(I, size(rocketStart, 1))
 const lqrRMat = 0.0025 * Diagonal(I, Int64(size(rocketStart, 1) / 2))
 costFun = makeLQR_TrajReferenced(lqrQMat, lqrRMat, NSteps, initTraj)
 
@@ -137,14 +145,15 @@ else
                                                         size(initTraj, 1))
 end
 
-hDual = heatmap(hcat(trajStatesAllPD[end].duals))
-yflip!()
-ylabel!("Column")
-title!("Dual Vector for Dynamics Constraints")
-display(hDual)
-
 # Blocked so that it can be run independently after the fact
-if true
+if runplots
+
+    hDual = heatmap(hcat(trajStatesAllPD[end].duals))
+    yflip!()
+    ylabel!("Column")
+    title!("Dual Vector for Dynamics Constraints")
+    display(hDual)
+
     # Get the parsed list of trajectories
     nDim = size(grav, 1)
     pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu =
@@ -152,9 +161,9 @@ if true
 end
 
 # Blocked so that it can be run independently after the fact
-if true
-    header = "MaxThrustNew_" * string(currSolveParams.maxOuterIters) *
+if runplots && saveplots
+    header = "3DTest_" * string(currSolveParams.maxOuterIters) *
              "Outer_" * string(currSolveParams.maxNewtonSteps) * "Newton" *
-             string(Int64(rocketStart[4])) * "Vel" * "_"
+             string(Int64(rocketStart[2 * nDim])) * "Vel" * "_"
     saveBulk(pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu, header)
 end

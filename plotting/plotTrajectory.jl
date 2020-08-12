@@ -1,10 +1,6 @@
 # Plot Trajectories
 
-include("trajectoryParsing.jl")
-
-
-using Plots
-pyplot()
+using TrajOptSOCPs, Plots
 
 function plotTrajPos2D_Simple(xList, yList)
     plt = plot(xList, yList, markershape = :circle)
