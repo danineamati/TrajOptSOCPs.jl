@@ -9,3 +9,9 @@ end
 @safetestset "Affine Constraints Tests" begin
     include("test_affineConstraints.jl")
 end
+
+# The base constraint manager tests
+@safetestset "Base Constraint Manager Tests" begin
+    include("test_constraintManager.jl")
+
+end

@@ -15,7 +15,7 @@ using Test
     @test !TrajOptSOCPs.satisfied(dT, 0)
 
     # Run a simple evaluation
-    @test TrajOptSOCPs.getRaw(dT, 2) == 0
+    @test TrajOptSOCPs.getRaw(dT, 2) == [0]
 end
 
 @testset "Affine Equality Constraint" begin
@@ -72,7 +72,7 @@ end
     @test TrajOptSOCPs.satisfied(diT, 0)
 
     # Run a simple evaluation
-    @test TrajOptSOCPs.getRaw(diT, 2) == 0
+    @test TrajOptSOCPs.getRaw(diT, 2) == [0]
 end
 
 @testset "Affine Inequality Constraint" begin
