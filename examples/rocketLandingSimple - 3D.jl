@@ -19,7 +19,7 @@ include("../plotting/plotConstraintViolation.jl")
 include("../plotting/plotObjective.jl")
 include("../plotting/batchPlots.jl")
 pyplot()
-runplots = true
+runplots = false
 saveplots = false
 
 
@@ -33,14 +33,14 @@ println("--------------------------------------------")
 # select "y" as the vertical
 mass = 1
 isp = 1
-grav = [0; -9.81]
+grav = [0; 0; -9.81]
 deltaTime = 1
 rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 20.0; 0.0; -18.0]
-const rocketEnd = [0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
+const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -18.0]
+const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
 
