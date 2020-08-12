@@ -6,14 +6,16 @@
 [![Coverage](https://coveralls.io/repos/github/danineamati/TrajOptSOCPs.jl/badge.svg?branch=master)](https://coveralls.io/github/danineamati/TrajOptSOCPs.jl?branch=master)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://danineamati.github.io/TrajOptSOCPs.jl/dev)
 
+### Fast and Robust Trajectory Optimization for the Rocket Soft-Landing Problem
+
 A native Julia library to solve trajectory optimization problems that contain
 second-order cone constraints.
 
-Author: Daniel Neamati (Summer 2020)
+Author: Daniel Neamati (Summer 2020) ([Please also see my Portfolio](https://sites.google.com/view/danielneamati/))
 
 Advisor: Prof. Zachary Manchester ([REx Lab at Stanford University](https://rexlab.stanford.edu/))
 
 Funding graciously provided by Caltech SURF program and the Homer J. Stewart
 Fellowship.
 
-See also: [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl)
+See also the registered Julia package: [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl)
