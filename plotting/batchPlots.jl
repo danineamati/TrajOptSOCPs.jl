@@ -2,6 +2,10 @@
 
 using TrajOptSOCPs
 
+include("plotConstraintViolation.jl")
+include("plotObjective.jl")
+include("plotTrajectory.jl")
+include("plotTrajectory3D.jl")
 
 function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
                             penalty::Float64 = 1.0)
@@ -12,8 +16,14 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
     ptrajStart = ptList[1]
     ptrajLast = ptList[end]
 
-    pltTraj = plotTrajPos2D_Multiple(ptList)
-    display(pltTraj)
+    if nDim == 2
+        pltTraj = plotTrajPos2D_Multiple(ptList)
+        display(pltTraj)
+    elseif nDim == 3
+        pltTraj = plotTrajPos3D_Multiple(ptList)
+        display(pltTraj)
+    end
+
 
     pltCV, pltCV2 = plotConstraintViolation(cM, trajStates, penalty)
     display(pltCV)
@@ -23,7 +33,11 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
     display(pltObj)
 
     # plotSVUTime_Simple(ptList[1])
-    plts, pltv, pltu = plotSVUTime_StartEnd([ptrajStart, ptrajLast])
+    if nDim == 2
+        plts, pltv, pltu = plotSVUTime_StartEnd([ptrajStart, ptrajLast])
+    elseif nDim == 3
+        plts, pltv, pltu = plotSVUTime3D_StartEnd([ptrajStart, ptrajLast])
+    end
 
     return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu
 end

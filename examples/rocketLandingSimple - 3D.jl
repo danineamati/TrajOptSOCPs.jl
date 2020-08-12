@@ -14,13 +14,13 @@ using LinearAlgebra, SparseArrays
 
 # If you don't want plotting comment the include and pyplot statements.
 # Then, sent runplots = false
-include("../plotting/plotTrajectory.jl")
-include("../plotting/plotConstraintViolation.jl")
-include("../plotting/plotObjective.jl")
+# include("../plotting/plotTrajectory.jl")
+# include("../plotting/plotConstraintViolation.jl")
+# include("../plotting/plotObjective.jl")
 include("../plotting/batchPlots.jl")
 pyplot()
-runplots = false
-saveplots = false
+runplots = true
+saveplots = true
 
 
 println("\n--------------------------------------------")
@@ -39,7 +39,7 @@ rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -18.0]
+const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -25.0]
 const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
@@ -162,8 +162,8 @@ end
 
 # Blocked so that it can be run independently after the fact
 if runplots && saveplots
-    header = "MaxThrustNew_" * string(currSolveParams.maxOuterIters) *
+    header = "3DTest_" * string(currSolveParams.maxOuterIters) *
              "Outer_" * string(currSolveParams.maxNewtonSteps) * "Newton" *
-             string(Int64(rocketStart[4])) * "Vel" * "_"
+             string(Int64(rocketStart[2 * nDim])) * "Vel" * "_"
     saveBulk(pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu, header)
 end
