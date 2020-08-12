@@ -31,7 +31,9 @@ See also the registered Julia package: [TrajectoryOptimization.jl](https://githu
 Check out the documentation at [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://danineamati.github.io/TrajOptSOCPs.jl/dev)
 
 #### Do you want to contribute? Here are some next steps
-1. The last SOCP capabilities are currently in the works. (This will be done soon)
-2. MonteCarlo simulation framework.
-3. More descriptive dynamics.
-4. Integrate into the [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl) framework.
+1. Add the remaining SOCP capabilities. (This will be done soon)
+2. Integrate current code with MonteCarlo simulation framework.
+3. Move the current tests to the Julia test framework.
+4. Add remaining test to improve code coverage.
+5. Introduce more descriptive dynamics.
+6. Integrate into the [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl) framework.
