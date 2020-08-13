@@ -51,12 +51,12 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
     display(pltAngleT)
 
 
-    return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu
+    return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu, pltMagT, pltAngleT
 end
 
 
 function saveBulk(pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu,
-                    header::String)
+                    pltMagT, pltAngleT, header::String)
     savefig(pltTraj, header * "Trajectory")
     savefig(pltCV, header * "ConstraintViolation")
     savefig(pltCV2, header * "DynamicsViolation")
@@ -64,4 +64,6 @@ function saveBulk(pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu,
     savefig(plts, header * "PositionTime")
     savefig(pltv, header * "VelocityTime")
     savefig(pltu, header * "ControlsTime")
+    savefig(pltMagT, header * "ThrustMagTime")
+    savefig(pltAngleT, header * "ThrustAngleTime")
 end
