@@ -20,7 +20,7 @@ using LinearAlgebra, SparseArrays
 include("../plotting/batchPlots.jl")
 pyplot()
 runplots = true
-saveplots = true
+saveplots = false
 
 
 println("\n--------------------------------------------")
@@ -39,7 +39,7 @@ rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -15.0]
+const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -45.0]
 const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
@@ -157,7 +157,8 @@ if runplots
     # Get the parsed list of trajectories
     nDim = size(grav, 1)
     pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu =
-                                    batchPlot(trajStatesAll, cMRocket, nDim)
+                                    batchPlot(trajStatesAll, cMRocket, nDim,
+                                                penaltyStart, thrustMax)
 end
 
 # Blocked so that it can be run independently after the fact

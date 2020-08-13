@@ -6,9 +6,11 @@ include("plotConstraintViolation.jl")
 include("plotObjective.jl")
 include("plotTrajectory.jl")
 include("plotTrajectory3D.jl")
+include("plotThrust.jl")
+
 
 function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
-                            penalty::Float64 = 1.0)
+                            penalty::Float64 = 1.0, maxThrust::Float64 = 0.0)
     ptList = [getParseTrajectory(traj, nDim) for traj in trajStates]
     # println("ptList: ")
     # display(ptList)
@@ -38,6 +40,10 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
     elseif nDim == 3
         plts, pltv, pltu = plotSVUTime3D_StartEnd([ptrajStart, ptrajLast])
     end
+
+    pltMagT = plotMagThrust_StartEnd(ptrajStart.uList, ptrajLast.uList,
+                                     maxThrust)
+    display(pltMagT)
 
     return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu
 end
