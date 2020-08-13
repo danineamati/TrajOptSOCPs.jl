@@ -1,9 +1,11 @@
-using TrajOptSOCPs
-using Test
+using SafeTestsets
 
-@testset "Base Cases" begin
-    # Write your tests here.
-    @test fCheck2(4) == 16
-    @test fCheck2(8) == 64
-    @test fCheck2(10) == 100
+# The absolute most basic tests
+@safetestset "Most Basic Tests" begin
+    include("test_mostBasic.jl")
+end
+
+# Test the angle cone
+@safetestset "Angle SOCP Constraint Test" begin
+    include("test_angleSOCP.jl")
 end
