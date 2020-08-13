@@ -32,7 +32,7 @@ export fCheck2
 include("rocket/rocket-setup.jl")
 include("rocket/ground.jl")
 include("rocket/maxThrust.jl")
-
+include("rocket/maxThrustAngle.jl")
 
 include("dynamics/trajectory-setup.jl")
 include("objective/LQR_objective.jl")
@@ -62,7 +62,8 @@ export ALPrimalNewtonMain, solParamPrint,
         initializeTraj, rocketDynamicsFull
 
 # Export Helper Set-Up Functions
-export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint
+export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint,
+        makeMaxAngleConstraint
 
 # Export Evaluation functions
 export evalConstraints, evalGradConstraints, evalHessConstraints,

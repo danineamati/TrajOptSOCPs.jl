@@ -50,20 +50,27 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
                                      maxAngleDeg)
     display(pltAngleT)
 
+    pltAngleTNoLine = plotAngle3D_StartEnd(ptrajStart.uList, ptrajLast.uList)
+    display(pltAngleTNoLine)
 
-    return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu, pltMagT, pltAngleT
+    pltList = [pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu,
+                pltMagT, pltAngleT, pltAngleTNoLine]
+
+    pltLabels = ["Trajectory", "ConstraintViolation", "DynamicsViolation",
+                    "Objective", "PositionTime", "VelocityTime",
+                    "ControlsTime", "ThrustMagTime", "ThrustAngleTime",
+                    "ThrustAngleTimeNoLine"]
+
+    # Return the result as a dictionary
+    return Dict(zip(pltLabels, pltList))
 end
 
 
-function saveBulk(pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu,
-                    pltMagT, pltAngleT, header::String)
-    savefig(pltTraj, header * "Trajectory")
-    savefig(pltCV, header * "ConstraintViolation")
-    savefig(pltCV2, header * "DynamicsViolation")
-    savefig(pltObj, header * "Objective")
-    savefig(plts, header * "PositionTime")
-    savefig(pltv, header * "VelocityTime")
-    savefig(pltu, header * "ControlsTime")
-    savefig(pltMagT, header * "ThrustMagTime")
-    savefig(pltAngleT, header * "ThrustAngleTime")
+function saveBulk(pltDict, header::String)
+
+    for (index, value) in pltDict
+        println("Saving: $index $value")
+        savefig(value, header * index)
+    end
+
 end

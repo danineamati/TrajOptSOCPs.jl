@@ -35,7 +35,7 @@ function getAngle3D(u)
         # hit the tan singularity
         return pi / 2
     else
-        return tan(norm([u[1]; u[2]]) / u[3])
+        return atan(norm([u[1]; u[2]]), -u[3])
     end
 end
 
