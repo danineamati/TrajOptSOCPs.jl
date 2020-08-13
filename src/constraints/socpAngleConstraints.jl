@@ -375,3 +375,97 @@ function getNormToProjVals(r::AL_Multiple_AngleCone, x)
     lambdaVec = spzeros(size(r.indicatorList, 1))
     return getNormToProjVals(r, x, lambdaVec)
 end
+
+
+"""
+    getGradC(r::AL_Multiple_AngleCone, x)
+
+Parses the relevant `x` vector for each cone constraint. It calculates the
+gradient of each and then stiches it into a jacobian of the same dimension
+as `x` and number of constraints with the zeros in relevant indicies.
+
+(Result is a sparse array)
+
+See also [`AL_Multiple_AngleCone`](@ref) and [`AL_simpleCone`](@ref)
+"""
+function getGradC(r::AL_Multiple_AngleCone, x)
+    # Use the parsed steps to separate our each constraint
+    steps = parseRelevantSteps(r, x)
+
+    # Use the AL_simpleCone to get the gradient for each constraint
+    gradList = [getGradC(r.sc, st) for st in steps]
+
+    # Stitch it back together.
+    gradStitched = spzeros(size(r.indicatorList, 1), size(x, 1))
+
+    for (ind, pos) in enumerate(r.indicatorList)
+        posEnd = pos + r.nDim - 1
+        gradStitched[ind, pos:posEnd] = gradList[ind]
+    end
+
+    return gradStitched
+end
+
+"""
+    getHessC(r::AL_Multiple_AngleCone, x)
+
+Calculate the hessian of a constraint.
+
+For `r::AL_Multiple_AngleCone`, `H(c(x)) = 0`
+
+See also [`AL_Multiple_AngleCone`](@ref) and [`AL_simpleAngleCone`](@ref)
+"""
+function getHessC(r::AL_Multiple_AngleCone, x)
+    return spzeros(size(x, 1), size(x, 1))
+end
+
+"""
+    getHessC_ALTerm(r::AL_Multiple_AngleCone, x, rho = 1)
+
+This is the hessian of the *constraint term* as it appears in the
+augmented lagrangian.
+
+For `r::AL_Multiple_AngleCone`,
+`H(ρ c(x)'c(x) + λ c(x)) = ρ s * s' / norm(s)^2` for each constraint.
+
+Parses the relevant `x` vector for each cone constraint. It calculates the
+hessian of each and then stiches it into a vector of the same dimension
+as `x`×`x` with the zeros in relevant indicies.
+
+(Result is a sparse array)
+
+See also [`AL_Multiple_AngleCone`](@ref) and [`AL_simpleAngleCone`](@ref)
+"""
+function getHessC_ALTerm(r::AL_Multiple_AngleCone, x, rho = 1)
+    #=
+    The augmented lagrangian constraint term is of the form:
+    ρ c(x)'c(x) + λ c(x)
+
+    where c(x) = x / ||x||.
+
+    The Hessian matrix is then
+    Htot = ρ (c.H + J.J + H.c) + λ H
+
+    But H = 0 for Affine equalities, so
+    Htot = ρ (J.J) = ρ s * s' / norm(s)^2
+
+    For each constraint!
+    =#
+
+    # Use the parsed steps to separate our each constraint
+    steps = parseRelevantSteps(r, x)
+
+    # Use the AL_simpleCone to get the total hessian for each constraint
+    hessList = [Symmetric(getHessC_ALTerm(r.sc, st)) for st in steps]
+
+    # Stitch it back together.
+    hessStitched = spzeros(size(x, 1), size(x, 1))
+
+    for (ind, pos) in enumerate(r.indicatorList)
+        posEnd = pos + r.nDim - 1
+        hessStitched[pos:posEnd, pos:posEnd] = hessList[ind]
+    end
+
+    return hessStitched
+
+end

@@ -70,7 +70,17 @@ end
 
     gN = TrajOptSOCPs.getNormToProjVals(aMany, xTest)
 
-    @test size(gN, 1) ==3
+    @test size(gN, 1) == 3
     @test gN'gN != 0.0
+
+    jacobMany = TrajOptSOCPs.getGradC(aMany, xTest)
+    hessMany = TrajOptSOCPs.getHessC(aMany, xTest)
+    ahessMany = TrajOptSOCPs.getHessC_ALTerm(aMany, xTest)
+
+    xSize = size(xTest, 1)
+
+    @test size(jacobMany) == (3, xSize)
+    @test size(hessMany) == (xSize, xSize)
+    @test size(ahessMany) == (xSize, xSize)
 
 end
