@@ -79,8 +79,7 @@ To check constraint satisfaction, use:
 
 To evaluate the constraint, use:
 - [`getRaw`](@ref) to evaluate the standard form.
-- [`getNormToProjVals`](@ref) to evaluate the the second order cone using
-projections.
+- [`getNormToProjVals`](@ref) to evaluate the cone using projections.
 
 """
 struct AL_simpleAngleCone <: constraint
@@ -238,4 +237,141 @@ function getHessC_ALTerm(r::AL_simpleAngleCone, x, rho = 1)
     c = (r.alpha^2) * (tI * tI')
 
     return rho * Symmetric(a + b + bT + c)
+end
+
+# -----------------------
+# Simple Second-Order Cone Constraints for Multiple angle type constraints
+# -----------------------
+@doc raw"""
+    AL_Multiple_AngleCone(
+                        sc::AL_simpleAngleCone,
+                        nDim::Int64,
+                        indicatorList::Tuple{Array{Int64,1},Array{Int64,1}})
+
+Handles Multiple Second Order Cone Constraint (SOCP) of the form
+```math
+||s_k|| ≤ alpha t_k \quad \text{for} \ k ∈ N
+```
+where T is a list of primal decision vectors.
+
+So, in more standard form, this is becomes:
+```math
+||s_k|| - alpha t_k ≤ 0 \quad \text{for} \ k ∈ N
+```
+
+To check constraint satisfaction, use:
+[`satisified`](@ref) and [`whichSatisfied`](@ref)
+
+To evaluate the constraint, use:
+- [`getRaw`](@ref) to evaluate each cone without projections.
+- [`getNormToProjVals`](@ref) to evaluate each cone using projections.
+
+"""
+struct AL_Multiple_AngleCone <: constraint
+    sc::AL_simpleAngleCone
+    nDim::Int64
+    #Type of findnz(sparseArray)[1] or findall(!iszero, sparseArray)
+    indicatorList::Array{Int64,1}
+end
+
+function makeAL_Multiple_AngleCone(alpha::Float64,
+                sIndicate::Diagonal{Int64,Array{Int64,1}},
+                tIndicate::Array{Int64,1}, nDim::Int64,
+                indicatorList::Array{Int64,1})
+    return AL_Multiple_AngleCone(
+                    AL_simpleAngleCone(alpha, sIndicate, tIndicate),
+                    nDim, indicatorList)
+end
+
+"""
+    parseRelevantSteps(r::AL_Multiple_AngleCone, x)
+
+Run through the indicator list and use the dimensions to extract the
+relevant vectors from x
+"""
+function parseRelevantSteps(r::AL_Multiple_AngleCone, x)
+    # This array will store the relevant parts of the x vector.
+    steps = []
+
+    for ind in r.indicatorList
+        # Find the relevant parts and push them as a group
+        push!(steps, x[ind:(ind + r.nDim - 1)])
+    end
+
+    return steps
+end
+
+"""
+    getRaw(r::AL_Multiple_AngleCone, x)
+
+Evaluate each of the simple cone constraints without projection.
+"""
+function getRaw(r::AL_Multiple_AngleCone, x)
+    # Use the parsed steps and calculate the raw value for each set.
+    steps = parseRelevantSteps(r, x)
+    return [getRaw(r.sc, s) for s in steps]
+end
+
+
+"""
+    getProjVecs(r::AL_Multiple_AngleCone, steps, filled)
+
+Get the projection defined by [`AL_simpleAngleCone`](@ref) for each of the
+constraints.
+
+See also [`AL_Multiple_AngleCone`](@ref)
+"""
+function getProjVecs(r::AL_Multiple_AngleCone, steps, filled)
+    # Then loop through the parsed steps to get the projection.
+    pv = []
+    for (i, s) in enumerate(steps)
+        # Filled is needed to determine which projection and may be different
+        # for each of the different SOCP constraints in question.
+        push!(pv, getProjVecs(r.sc, s, filled[i]))
+    end
+
+    return pv
+end
+
+"""
+    getNormToProjVals(r::AL_Multiple_AngleCone, x, λ)
+
+Get the constraint violation for multiple second order cone constraints. The
+length of the vector `λ` must match the number of steps.
+
+See also [`AL_Multiple_AngleCone`](@ref) and [`coneActive`](@ref) for more
+information.
+"""
+function getNormToProjVals(r::AL_Multiple_AngleCone, x, λ)
+    # Use the parsed steps to separate our each constraint
+    steps = parseRelevantSteps(r, x)
+
+    # Determine which of the constraints (if any) require an unfilled cone/
+    fillVec = Bool[]
+    for (ind, st) in enumerate(steps)
+        s = get_s(r.sc, st)
+        t = get_t(r.sc, st)
+        push!(fillVec, coneActive(s, t, λ[ind])[2])
+    end
+
+    # Using the filled information and the steps in question, get the
+    # projection vectors
+    pvs = getProjVecs(r, steps, fillVec)
+
+    # Use the projection vectors to calculate the constraints.
+    constVio = []
+    for (st, p) in zip(steps, pvs)
+        s = get_s(r.sc, st)
+        t = get_t(r.sc, st)
+        push!(constVio, norm([s; t] - p))
+    end
+
+    # If there are NaN values (this happens if you take the norm of a zero
+    # vector that is large), use the snippet of code below.
+    return replace(constVio, NaN=>0.0)
+end
+
+function getNormToProjVals(r::AL_Multiple_AngleCone, x)
+    lambdaVec = spzeros(size(r.indicatorList, 1))
+    return getNormToProjVals(r, x, lambdaVec)
 end

@@ -1,7 +1,8 @@
 # Tests for angle SOCP constriants
 
 using TrajOptSOCPs
-using Test, LinearAlgebra
+using Test
+using SparseArrays, LinearAlgebra
 
 @testset "Simple Angle SOCP" begin
     sI = Diagonal([1; 0])
@@ -40,5 +41,36 @@ using Test, LinearAlgebra
     @test size(grad2, 1) == 2
     @test size(hess2) == (2, 2)
     @test size(alhess2) == (2, 2)
+
+end
+
+
+@testset "Multiple Angle SOCP" begin
+    sI = Diagonal([1; 0])
+    tI = [0; 1]
+    alpha = 0.2
+
+    nDim = 2
+    indicator = findnz(sparse(
+                    [0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1; 0]))[1]
+
+    aMany = TrajOptSOCPs.makeAL_Multiple_AngleCone(alpha, sI, tI,
+                                                    nDim, indicator)
+
+    # Check that it worked
+    @test typeof(aMany) == AL_Multiple_AngleCone
+
+    xTest = [1; 2; 3; 4; 5; 6; 6; 5; 4; 3; 2; 1; 1; 2; 3; 4; 5; 6]
+
+    # The code needs to notice that there are three vectors to extract and then
+    # get those and evaluate it.
+    rawVec = TrajOptSOCPs.getRaw(aMany, xTest)
+
+    @test size(rawVec, 1) == 3
+
+    gN = TrajOptSOCPs.getNormToProjVals(aMany, xTest)
+
+    @test size(gN, 1) ==3
+    @test gN'gN != 0.0
 
 end

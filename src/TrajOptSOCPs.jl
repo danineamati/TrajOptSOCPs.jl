@@ -48,7 +48,7 @@ include("other_utils/trajectoryParsing.jl")
 # # Export Constraint Structs
 export AL_AffineEquality, AL_AffineInequality,
         AL_simpleCone, AL_Multiple_simpleCone,
-        AL_simpleAngleCone
+        AL_simpleAngleCone, AL_Multiple_AngleCone
 
 # Export Top Level Structs
 export augLag, solverParams, constraintManager_Dynamics,

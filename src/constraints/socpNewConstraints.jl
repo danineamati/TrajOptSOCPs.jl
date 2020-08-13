@@ -27,8 +27,7 @@ To check constraint satisfaction, use:
 
 To evaluate the constraint, use:
 - [`getRaw`](@ref) to evaluate `||t|| - tMax`.
-- [`getNormToProjVals`](@ref) to evaluate the the second order cone using
-projections.
+- [`getNormToProjVals`](@ref) to evaluate the cone using projections.
 
 """
 struct AL_simpleCone <: constraint
@@ -277,7 +276,7 @@ end
 
 function getNormToProjVals(r::AL_Multiple_simpleCone, x)
     lambdaVec = spzeros(size(r.indicatorList, 1))
-    return getNormToProjVals(r::AL_Multiple_simpleCone, x, lambdaVec)
+    return getNormToProjVals(r, x, lambdaVec)
 end
 
 """
