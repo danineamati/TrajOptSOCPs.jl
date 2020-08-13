@@ -10,7 +10,8 @@ include("plotThrust.jl")
 
 
 function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
-                            penalty::Float64 = 1.0, maxThrust::Float64 = 0.0)
+                            penalty::Float64 = 1.0, maxThrust::Float64 = 0.0,
+                            maxAngleDeg::Float64 = 0.0)
     ptList = [getParseTrajectory(traj, nDim) for traj in trajStates]
     # println("ptList: ")
     # display(ptList)
@@ -44,6 +45,11 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
     pltMagT = plotMagThrust_StartEnd(ptrajStart.uList, ptrajLast.uList,
                                      maxThrust)
     display(pltMagT)
+
+    pltAngleT = plotAngle3D_StartEnd(ptrajStart.uList, ptrajLast.uList,
+                                     maxAngleDeg)
+    display(pltAngleT)
+
 
     return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu
 end
