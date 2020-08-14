@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/danineamati/TrajOptSOCPs.jl.svg?branch=master)](https://travis-ci.com/github/danineamati/TrajOptSOCPs.jl)
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/danineamati/TrajOptSOCPs.jl?svg=true)](https://ci.appveyor.com/project/danineamati/trajoptsocps-jl)
 [![Coverage](https://codecov.io/gh/danineamati/TrajOptSOCPs.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/danineamati/TrajOptSOCPs.jl)
-[![Coverage](https://coveralls.io/repos/github/danineamati/TrajOptSOCPs.jl/badge.svg?branch=master)](https://coveralls.io/github/danineamati/TrajOptSOCPs.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/danineamati/TrajOptSOCPs.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/danineamati/TrajOptSOCPs.jl?branch=master)
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://danineamati.github.io/TrajOptSOCPs.jl/dev)
 
 ---
@@ -31,7 +31,9 @@ See also the registered Julia package: [TrajectoryOptimization.jl](https://githu
 Check out the documentation at [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://danineamati.github.io/TrajOptSOCPs.jl/dev)
 
 #### Do you want to contribute? Here are some next steps
-1. The last SOCP capabilities are currently in the works. (This will be done soon)
-2. MonteCarlo simulation framework.
-3. More descriptive dynamics.
-4. Integrate into the [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl) framework.
+1. Add the remaining SOCP capabilities. (This will be done soon)
+2. Integrate current code with MonteCarlo simulation framework.
+3. Move the current tests to the Julia test framework.
+4. Add remaining test to improve code coverage.
+5. Introduce more descriptive dynamics.
+6. Integrate into the [TrajectoryOptimization.jl](https://github.com/RoboticExplorationLab/TrajectoryOptimization.jl) framework.
