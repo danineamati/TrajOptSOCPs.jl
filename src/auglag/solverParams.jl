@@ -1,5 +1,9 @@
 # Solver Parameters
 
+# Verbose Ranges
+
+@enum verboseRange NONE INTERIM SNAPSHOTS DEBUG ALL
+
 # -------------------------
 # Solver Parameters
 # -------------------------
@@ -60,6 +64,8 @@ struct solverParams
     trc2::Float16           # Taylor Series Error Parameter (0 < c2 < 1)
     trc3::Float16           # Failed Size Reduction Parameter (0 < c3 < c4)
     trc4::Float16           # Failed Size Reduction Parameter (c3 < c4 < 1)
+    # Printing Parameters
+    verbose::verboseRange   # Print debug information?
 end
 
 """
@@ -82,4 +88,5 @@ function solParamPrint(sp::solverParams)
     println("                c3 = $(sp.trc3), c4 = $(sp.trc4) ")
     print("                (with 0 < c3 < c4 < 1) -> $(0 < sp.trc3) & ")
     println("$(sp.trc3 < sp.trc4) & $(sp.trc4 < 1)")
+    println("(Verbose)     : $(sp.verbose)")
 end

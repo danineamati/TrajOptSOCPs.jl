@@ -124,7 +124,8 @@ currSolveParams = solverParams(0.1, 0.5,
                                 8, 10,
                                 10^-4,
                                 10, 10^6,
-                                2.5, 2, 0.2, 0.2, 0.4)
+                                2.5, 2, 0.2, 0.2, 0.4,
+                                TrajOptSOCPs.NONE)
 solParamPrint(currSolveParams)
 println()
 println()

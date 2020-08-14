@@ -82,8 +82,7 @@ function newtonStepALP(y0, al::augLag, delta = 1,
 end
 
 """
-    newtonTRLS_ALP(y0::SOCP_primals, al::augLagQP_2Cone,
-                            sp::solverParams, verbose = false)
+    newtonTRLS_ALP(y0::SOCP_primals, al::augLagQP_2Cone, sp::solverParams)
 
 Performs a maximum on `N` newton steps as specified by [`solverParams`](@ref).
 May return early if the residual is lower than the tolerance specified by
@@ -100,7 +99,7 @@ returns (yNewtStates, residNewt) which are:
 
 See also: [`augLagQP_2Cone`](@ref), [`SOCP_primals`](@ref)
 """
-function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
+function newtonTRLS_ALP(y0, al::augLag, sp::solverParams)
     yNewtStates = []
     residNewt = []
     # push!(yNewtStates, y0)
@@ -117,13 +116,13 @@ function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
     # Now, we run through the iterations
     for i in 1:(sp.maxNewtonSteps)
 
-        if verbose
+        if sp.verbose ≥ DEBUG
             println("Currently at $yCurr")
         end
 
         currentObjVal = lineSearchObj(yCurr)
 
-        if verbose
+        if sp.verbose ≥ ALL
             println("ϕ(y) = $currentObjVal")
             println("∇ϕ(y) = $(lineSearchdfdx(yCurr))")
             cCurr = evalConstraints(al.cM, yCurr, al.rho)
@@ -137,59 +136,82 @@ function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
         push!(residNewt, residual)
         # LCho = sparse(rCho.L)
 
-        if true
-            # println("\nNewton Direction: $dk")
+        if sp.verbose ≥ ALL
+            println("\nNewton Direction: $dk")
+            println("AL: $al")
+        end
+
+        if sp.verbose ≥ INTERIM
             println("Damping of ($damp) and trust size of ($trustDelta)")
-            # println("AL: $al")
         end
 
         # Determine if the trust region is sufficient
         y0New = yCurr + dk
         baseObjVal = lineSearchObj(y0New)
-        println("Objective from $currentObjVal → $baseObjVal")
+
+        if sp.verbose ≥ SNAPSHOTS
+            println("Objective from $currentObjVal → $baseObjVal")
+        end
+
         if baseObjVal ≤ currentObjVal
             # Trust region was a success
             # Step 4 of algorithm 3.1 in the Nocedal et Yuan paper
 
-            if true
+            if sp.verbose ≥ INTERIM
                 println("Trust Region Success")
             end
 
             # fObjApprox(d) = residual'd + (1/2) * d'*(LCho * LCho')*d
             fObjApprox(d) = residual'd + (1/2) * d'*(BDamp)*d
-            println("fObjApprox(d) = $(fObjApprox(dk))")
+
+            if sp.verbose ≥ SNAPSHOTS
+                println("fObjApprox(d) = $(fObjApprox(dk))")
+            end
+
             rho = (currentObjVal - baseObjVal) / (-fObjApprox(dk)[1])
             roundingErrorTol = UInt8(round(-log10(sp.rTol)) / 2)
 
-            println("Rho = $rho")
+            if sp.verbose ≥ SNAPSHOTS
+                println("Rho = $rho")
+            end
+
             roundedDkNorm = round(norm(dk), digits = roundingErrorTol)
             roundedTrustDelta = round(trustDelta, digits = roundingErrorTol)
 
-            print("||dk|| = $(norm(dk)) → $roundedDkNorm")
-            print(" vs Δ = $trustDelta → $roundedTrustDelta")
-            println(" at $roundingErrorTol digits")
+            if sp.verbose ≥ SNAPSHOTS
+                print("||dk|| = $(norm(dk)) → $roundedDkNorm")
+                print(" vs Δ = $trustDelta → $roundedTrustDelta")
+                println(" at $roundingErrorTol digits")
+            end
 
             if rho ≥ sp.trc2 && roundedDkNorm < roundedTrustDelta
                 # ρ ≥ c2 AND ||dk|| < Δ
                 # Condition 1: No change
                 # trustDelta = trustDelta # Probably not needed
-                println("Trust Region Size unchanged. Still at $trustDelta")
+                if sp.verbose ≥ INTERIM
+                    println("Trust Region Size unchanged. Still at $trustDelta")
+                end
             elseif rho < sp.trc2
                 # ρ < c2, but ||dk|| ≤ Δ
                 trustDelta = (sp.trc3 * norm(dk) +
                                             sp.trc4 * trustDelta) / 2
-                println("Trust Region Size decreased. Now $trustDelta")
+                if sp.verbose ≥ INTERIM
+                    println("Trust Region Size decreased. Now $trustDelta")
+                end
             else
                 # Implies that ρ ≥ c2 AND ||dk|| = Δ
                 trustDelta = sp.trc1 * trustDelta
-                println("Trust Region Size increased. Now $trustDelta")
+
+                if sp.verbose ≥ INTERIM
+                    println("Trust Region Size increased. Now $trustDelta")
+                end
             end
 
 
         else
             # Trust region failed.
 
-            if true
+            if sp.verbose ≥ INTERIM
                 print("Trust Region Failed - ")
                 println("Trying Line Search.")
             end
@@ -207,16 +229,18 @@ function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
             # Attempt a linesearch
             # Get the line search recommendation
             y0New, stepLS = backtrackLineSearch(yCurr, dk,
-                            lineSearchObj, lineSearchdfdx, sp.paramA, sp.paramB)
+                            lineSearchObj, lineSearchdfdx,
+                            sp.paramA, sp.paramB,
+                            (sp.verbose ≥ DEBUG))
 
-            if true
+            if sp.verbose ≥ SNAPSHOTS
                 println("    Recommended Line Search Step: $stepLS")
                 if stepLS < (sp.paramB ^ 3)
                     println("    Very low step.")
                 end
             end
 
-            if verbose
+            if sp.verbose ≥ DEBUG
                 print("Expected x = ")
                 println("$y0New ?= $(primalVec(yCurr) + stepLS * dk)\n")
             end
@@ -230,13 +254,16 @@ function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
         # Save the new state to the output list
         push!(yNewtStates, y0New)
 
-        if true
+        if sp.verbose ≥ INTERIM
             println("Added State")#"$y0New\n")
         end
 
         # Break by tolerance and trust region size
         if (norm(residual, 2) < sp.rTol)
-            println("Ended from tolerance at $i Newton steps\n")
+            if sp.verbose ≥ INTERIM
+                println("Ended from tolerance at $i Newton steps\n")
+            end
+
             early = true
             break
         end
@@ -252,11 +279,11 @@ function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
 
     end
 
-    if !early
+    if !early && sp.verbose ≥ INTERIM
         println("Ended from max steps in $(sp.maxNewtonSteps) Newton Steps\n")
     end
 
-    if verbose
+    if sp.verbose ≥ DEBUG
         println("Ended Newton Method at $yCurr")
         println("ϕ(y) = $(lineSearchObj(primalVec(yCurr)))")
         println("∇ϕ(y) = $(lineSearchdfdx(primalVec(yCurr)))")
@@ -269,8 +296,7 @@ function newtonTRLS_ALP(y0, al::augLag, sp::solverParams, verbose = false)
 end
 
 """
-    ALPrimalNewtonMain(y0::SOCP_primals, al::augLagQP_2Cone,
-                           sp::solverParams, verbose = false)
+    ALPrimalNewtonMain(y0, al::augLag, sp::solverParams)
 
 Performs a maximum on `N` outer steps as specified by [`solverParams`](@ref).
 May return early if the residual is lower than the tolerance specified by
@@ -284,9 +310,9 @@ returns (yStates, residuals) which are:
 - `yStates`: An array with one entry of the primal vector per Newton step
 - `residuals`: An array with one entry of the residual vector per Newton step
 
-See also: [`augLagQP_2Cone`](@ref), [`SOCP_primals`](@ref)
+See also: [`augLag`](@ref)
 """
-function ALPrimalNewtonMain(y0, al::augLag, sp::solverParams, verbose = false)
+function ALPrimalNewtonMain(y0, al::augLag, sp::solverParams)
 
     yStates = []
     residuals = []
@@ -295,12 +321,12 @@ function ALPrimalNewtonMain(y0, al::augLag, sp::solverParams, verbose = false)
     for i in 1:(sp.maxOuterIters)
 
         # Update x at each iteration
-        if verbose
+        if sp.verbose ≥ SNAPSHOTS
             println("\n--------------------------------------")
             println("Next Full Update starting at $y0")
         end
 
-        (yNewStates, resAtStates) = newtonTRLS_ALP(y0, al, sp, verbose)
+        (yNewStates, resAtStates) = newtonTRLS_ALP(y0, al, sp)
 
         # Take each step in the arrays above and save it to the respective
         # overall arrays
@@ -323,7 +349,7 @@ function ALPrimalNewtonMain(y0, al::augLag, sp::solverParams, verbose = false)
         #     println("yNewest = $yNewest")
         #     println("All residuals = $residuals")
         # end
-        if verbose
+        if sp.verbose ≥ ALL
             println("\n################")
             println("Former Lambda: $(al.lambda)")
         end
@@ -331,7 +357,7 @@ function ALPrimalNewtonMain(y0, al::augLag, sp::solverParams, verbose = false)
         updateDual!(al.cM, yNewPrimals, al.rho)
         al.rho = clamp(al.rho * sp.penaltyStep, 0, sp.penaltyMax)
 
-        if verbose
+        if sp.verbose ≥ ALL
             println("New state added: (Newest) $yNewest")
             println("cCurr: $(cCurr)")
             println("Lambda Updated: $(al.lambda) vs. $lambdaNew")
@@ -340,7 +366,10 @@ function ALPrimalNewtonMain(y0, al::augLag, sp::solverParams, verbose = false)
         end
 
         if (norm(residuals[end], 2) < sp.rTol) && (al.rho == sp.penaltyMax)
-            println("Ended early at $i outer steps")
+            if sp.verbose ≥ INTERIM
+                println("Ended early at $i outer steps")
+            end
+
             break
         else
             y0 = yNewest
