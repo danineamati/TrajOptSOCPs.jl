@@ -10,9 +10,9 @@ include("projections.jl")
 # Simple Second-Order Cone Constraints
 # -----------------------
 @doc raw"""
-    AL_coneSlack(tMax)
+    AL_simpleCone(tMax)
 
-Creates a _simple_ Second Order Cone Constraint (SOCP) of the form
+Creates a _simple_ Second Order Cone Constraint (e.g. for an SOCP) of the form
 ```math
 ||t|| ≤ tMax
 ```
@@ -27,8 +27,7 @@ To check constraint satisfaction, use:
 
 To evaluate the constraint, use:
 - [`getRaw`](@ref) to evaluate `||t|| - tMax`.
-- [`getNormToProjVals`](@ref) to evaluate the projection to the affine
-equalities and (more critically) the second order cone.
+- [`getNormToProjVals`](@ref) to evaluate the cone using projections.
 
 """
 struct AL_simpleCone <: constraint
@@ -128,7 +127,7 @@ function getHessC_ALTerm(r::AL_simpleCone, t, rho = 1)
 
     But H = 0 for Affine equalities, so when the constraint is not satisfied,
     Htot = ρ (J.J) = ρ s * s' / norm(s)^2
-    Wehen the constraint is satisfied, it is just zero.
+    When the constraint is satisfied, it is just zero.
     =#
 
     if satisfied(r, t)
@@ -277,7 +276,7 @@ end
 
 function getNormToProjVals(r::AL_Multiple_simpleCone, x)
     lambdaVec = spzeros(size(r.indicatorList, 1))
-    return getNormToProjVals(r::AL_Multiple_simpleCone, x, lambdaVec)
+    return getNormToProjVals(r, x, lambdaVec)
 end
 
 """

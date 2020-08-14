@@ -13,5 +13,9 @@ end
 # The base constraint manager tests
 @safetestset "Base Constraint Manager Tests" begin
     include("test_constraintManager.jl")
-
+end
+  
+ # Test the angle cone
+@safetestset "Angle SOCP Constraint Test" begin
+    include("test_angleSOCP.jl")
 end

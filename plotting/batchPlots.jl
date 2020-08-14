@@ -6,9 +6,12 @@ include("plotConstraintViolation.jl")
 include("plotObjective.jl")
 include("plotTrajectory.jl")
 include("plotTrajectory3D.jl")
+include("plotThrust.jl")
+
 
 function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
-                            penalty::Float64 = 1.0)
+                            penalty::Float64 = 1.0, maxThrust::Float64 = 0.0,
+                            maxAngleDeg::Float64 = 0.0)
     ptList = [getParseTrajectory(traj, nDim) for traj in trajStates]
     # println("ptList: ")
     # display(ptList)
@@ -39,17 +42,35 @@ function batchPlot(trajStates, cM::constraintManager, nDim::Int64,
         plts, pltv, pltu = plotSVUTime3D_StartEnd([ptrajStart, ptrajLast])
     end
 
-    return pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu
+    pltMagT = plotMagThrust_StartEnd(ptrajStart.uList, ptrajLast.uList,
+                                     maxThrust)
+    display(pltMagT)
+
+    pltAngleT = plotAngle3D_StartEnd(ptrajStart.uList, ptrajLast.uList,
+                                     maxAngleDeg)
+    display(pltAngleT)
+
+    pltAngleTNoLine = plotAngle3D_StartEnd(ptrajStart.uList, ptrajLast.uList)
+    display(pltAngleTNoLine)
+
+    pltList = [pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu,
+                pltMagT, pltAngleT, pltAngleTNoLine]
+
+    pltLabels = ["Trajectory", "ConstraintViolation", "DynamicsViolation",
+                    "Objective", "PositionTime", "VelocityTime",
+                    "ControlsTime", "ThrustMagTime", "ThrustAngleTime",
+                    "ThrustAngleTimeNoLine"]
+
+    # Return the result as a dictionary
+    return Dict(zip(pltLabels, pltList))
 end
 
 
-function saveBulk(pltTraj, pltCV, pltCV2, pltObj, plts, pltv, pltu,
-                    header::String)
-    savefig(pltTraj, header * "Trajectory")
-    savefig(pltCV, header * "ConstraintViolation")
-    savefig(pltCV2, header * "DynamicsViolation")
-    savefig(pltObj, header * "Objective")
-    savefig(plts, header * "PositionTime")
-    savefig(pltv, header * "VelocityTime")
-    savefig(pltu, header * "ControlsTime")
+function saveBulk(pltDict, header::String)
+
+    for (index, value) in pltDict
+        println("Saving: $index $value")
+        savefig(value, header * index)
+    end
+
 end
