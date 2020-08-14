@@ -158,7 +158,11 @@ function getGradC(r::AL_simpleAngleCone, x)
     # ds will have 0 in the disregarded spot for dt
     # Ex: s1 = Diagonal([1; 0; 1]) * [4; 5; 6] -> [4; 0; 6]
     #     ds1 = [0.5547001962252291;  0.0;  0.8320502943378437]
-    ds = s / norm(s)
+    if norm(s) == 0.0
+        ds = 0.0 * s
+    else
+        ds = s / norm(s)
+    end
 
     # dt will have 0 in the disregarded spots for ds
     # Ex: t1 = [0; 1; 0]' * [4; 5; 6]

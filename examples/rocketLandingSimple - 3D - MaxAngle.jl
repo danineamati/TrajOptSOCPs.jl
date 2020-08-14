@@ -39,7 +39,7 @@ rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 5.0; 20.0; 0.0; 0.0; -15.0]
+const rocketStart = [2.0; 5.0; 20.0; 4.0; 0.0; -15.0]
 const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
@@ -69,22 +69,22 @@ maxThrustConstraint = makeMaxThrustConstraint(NSteps, size(grav, 1), thrustMax)
 maxThrustLambda = zeros(size(maxThrustConstraint.indicatorList))
 
 # Create the Max Thrust Angle Constraints
-thrustAngleMax = 20.0 # Deg
+thrustAngleMax = 10.0 # Deg
 maxAngleConstraint = makeMaxAngleConstraint(NSteps, size(grav, 1),
                                                 thrustAngleMax, true)
 maxAngleLambda = zeros(size(maxAngleConstraint.indicatorList))
 
 # Create the constraint manager
-# cMRocket = constraintManager_Dynamics(
-#             [groundConstraint, maxThrustConstraint, maxAngleConstraint],
-#             [groundLambda, maxThrustLambda, maxAngleLambda],
-#             dynConstraint, lambdaInit
-#             )
 cMRocket = constraintManager_Dynamics(
-            [groundConstraint, maxThrustConstraint],
-            [groundLambda, maxThrustLambda],
+            [groundConstraint, maxThrustConstraint, maxAngleConstraint],
+            [groundLambda, maxThrustLambda, maxAngleLambda],
             dynConstraint, lambdaInit
             )
+# cMRocket = constraintManager_Dynamics(
+#             [groundConstraint, maxThrustConstraint],
+#             [groundLambda, maxThrustLambda],
+#             dynConstraint, lambdaInit
+#             )
 
 # Initialize the primal-dual vector
 initTrajPD = [initTraj; lambdaInit]
@@ -169,7 +169,7 @@ end
 
 # Blocked so that it can be run independently after the fact
 if runplots && saveplots
-    header = "3DTest_" * string(currSolveParams.maxOuterIters) *
+    header = "3DTest_SlantAngle_" * string(currSolveParams.maxOuterIters) *
              "Outer_" * string(currSolveParams.maxNewtonSteps) * "Newton" *
              string(Int64(rocketStart[2 * nDim])) * "Vel" * "_"
     saveBulk(pltDict, header)
