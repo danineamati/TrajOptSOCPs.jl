@@ -93,6 +93,9 @@ For `r::AL_simpleCone`, this is the `∇c(x) = x / ||x||`
 There is a singularity at the tip.
 """
 function getGradC(r::AL_simpleCone, t)
+    if satisfied(r, t)
+        return zeros(size(t, 1))
+    end
     return t / norm(t)
 end
 

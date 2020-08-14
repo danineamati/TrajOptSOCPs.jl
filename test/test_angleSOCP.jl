@@ -94,8 +94,8 @@ end
     @test size(g3, 1) == 2
 
     @test g1 == [1; -alpha]
-    @test g2 == [1; -alpha]
-    @test g3 == [sign(alpha); -alpha]
+    @test g2 == [0.0; 0.0] #[1; -alpha]
+    @test g3 == [0.0; 0.0] #[sign(alpha); -alpha]
 
     h1 = TrajOptSOCPs.getHessC(asocp, xTest1)
     h2 = TrajOptSOCPs.getHessC(asocp, xTest2)
@@ -142,8 +142,8 @@ end
     @test size(g4, 1) == 3
 
     @test g1 == [1 / sqrt(2); -alpha; 1 / sqrt(2)]
-    @test g2 == [1 / sqrt(2); -alpha; 1 / sqrt(2)]
-    @test g3 == [0; -alpha; sign(alpha)]
+    @test g2 == zeros(3) #[1 / sqrt(2); -alpha; 1 / sqrt(2)]
+    @test g3 == zeros(3) #[0; -alpha; sign(alpha)]
     @test g4 == [0.1 / norm([0.1; 0.3]); -alpha; 0.3 / norm([0.1; 0.3])]
 
     h1 = TrajOptSOCPs.getHessC(asocp, xTest1)

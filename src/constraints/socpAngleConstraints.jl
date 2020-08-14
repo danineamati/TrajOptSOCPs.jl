@@ -153,6 +153,11 @@ For `r::AL_simpleAngleCone`, this is the `∇c(x) = [s / ||s||; - alpha]`
 There is a singularity at the tip.
 """
 function getGradC(r::AL_simpleAngleCone, x)
+
+    if satisfied(r, x)
+        return zeros(size(x, 1))
+    end
+
     s = get_s(r, x)
 
     # ds will have 0 in the disregarded spot for dt

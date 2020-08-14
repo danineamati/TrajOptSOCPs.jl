@@ -57,6 +57,17 @@ end
 ###            Evaluate a List of Constraints             ###
 #############################################################
 
+function isCone(c::constraint)
+    if (typeof(c) == AL_simpleCone) |
+        (typeof(c) == AL_Multiple_simpleCone) |
+        (typeof(c) == AL_simpleAngleCone) |
+        (typeof(c) == AL_Multiple_AngleCone)
+
+        return true
+    end
+    return false
+end
+
 @doc raw"""
     evalConstraints(yCurr, cM::constraintManager, penalty::Float64)
 
@@ -84,7 +95,7 @@ function evalConstraints(cM::constraintManager, yCurr, penalty::Float64)
         # Obtain the dual variable matching this constraint
         lambda = cM.lambdaList[i]
         # Evaluate the current constraint
-        if (typeof(c) == AL_simpleCone) | (typeof(c) == AL_Multiple_simpleCone)
+        if isCone(c)
             cVal = getNormToProjVals(c, yCurr, lambda)
         else
             cVal = getNormToProjVals(c, yCurr)

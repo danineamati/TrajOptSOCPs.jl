@@ -3,7 +3,7 @@
 using Plots
 
 function plotTrajPos3D_Multiple(ptList, showN = 10)
-    plt = plot3d(legend = :outerright, zlabel = "Z (km)")
+    plt = plot3d(legend = :outerright, zlabel = "Z (m)")
 
     if length(ptList) >= showN
         indices = floor.(Int, LinRange(1, length(ptList), showN))
@@ -30,8 +30,8 @@ function plotTrajPos3D_Multiple(ptList, showN = 10)
         maxXY = max(maxXY, maximum(xList), maximum(yList))
     end
 
-    xlabel!("X (km)")
-    ylabel!("Y (km)")
+    xlabel!("X (m)")
+    ylabel!("Y (m)")
     # zlabel!("Z (km)")
     title!("Trajectory Convergence")
     # yflip!()

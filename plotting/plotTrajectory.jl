@@ -34,8 +34,8 @@ function plotTrajPos2D_Multiple(ptList, showN = 10)
         plot!(xList, yList, markershape = :circle, label = "Traj $ind")
     end
 
-    xlabel!("X (km)")
-    ylabel!("Y (km)")
+    xlabel!("X (m)")
+    ylabel!("Y (m)")
     title!("Test Trajectory")
     # yflip!()
 
