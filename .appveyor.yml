@@ -10,7 +10,6 @@ cache:
 matrix:
   allow_failures:
     - julia_version: nightly
-    - julia_version: 1.0
 branches:
   only:
     - master
