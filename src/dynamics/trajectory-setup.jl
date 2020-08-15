@@ -117,3 +117,48 @@ function initializeTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
 
     return XUfull
 end
+
+"""
+initializeHoverOnlyTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
+                        uHover::Array{Float64, 1}, NSteps::Int64)
+
+Initializes the full `XU` vector (see example below) that hovers at the initial
+point and does not move. The final state is effectively appended at the end.
+
+The control vector is set to hover only.
+"""
+function initializeHoverOnlyTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
+                                 uHover::Array{Float64, 1}, NSteps::Int64)
+     if size(x0) != size(xN)
+         error("x0 and xN must have the same size. " *
+                 "Currently: x0 = $x0 and xN = $xN")
+     end
+     if mod(size(x0, 1), 2) != 0
+         error("x0 and xN must have an even number of variables. " *
+               "Example, x0 = [sx0; sy0; vx0; vy0]. Currently x0 = $x0.")
+     end
+
+     nDim = Int64(size(x0, 1) / 2)
+     sizeXU = 3 * NSteps * nDim + 2 * nDim
+     XUfull = zeros(sizeXU, 1)
+
+     for k in 1:(NSteps + 1)
+         iStart = 1 + (k - 1) * (3 * nDim)
+         iEnd = iStart + (2 * nDim - 1)
+         # println("Accessing ($iStart, $iEnd)")
+
+         if k ≤ NSteps
+             XUfull[iStart:iEnd] = x0
+         else
+             XUfull[iStart:iEnd] = xN
+         end
+
+         if k ≤ NSteps
+             jStart = iEnd + 1
+             jEnd = jStart + (nDim - 1)
+             XUfull[jStart:jEnd] = uHover
+         end
+     end
+
+     return XUfull
+end

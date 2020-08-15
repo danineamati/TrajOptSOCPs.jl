@@ -59,7 +59,8 @@ export parseTrajectory, primal_dual
 
 # Export Top Level Functions
 export ALPrimalNewtonMain, solParamPrint,
-        initializeTraj, rocketDynamicsFull
+        initializeTraj, initializeHoverOnlyTraj,
+        rocketDynamicsFull
 
 # Export Helper Set-Up Functions
 export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint,
