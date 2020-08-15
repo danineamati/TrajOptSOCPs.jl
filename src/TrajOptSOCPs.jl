@@ -42,8 +42,10 @@ include("auglag/auglag-core.jl")
 
 include("solver/AL-Primal-Main-Solver.jl")
 include("solver/QP-AffineEquality-Solver.jl")
+
 include("other_utils/parsePrimalDual.jl")
 include("other_utils/trajectoryParsing.jl")
+include("other_utils/montecarlo.jl")
 
 # # Export Constraint Structs
 export AL_AffineEquality, AL_AffineInequality,
