@@ -184,7 +184,8 @@ end
 
 """
     rocketDynamicsFull(r::rocket_simple, x0::Array{Float64, 1},
-                             xN::Array{Float64, 1}, NSteps::Int64)
+                             xN::Array{Float64, 1}, NSteps::Int64,
+                             noEnd::Bool = false)
 
 We combine the stack at each `xk` with the initial and final conditions. Namely,
 
@@ -197,7 +198,8 @@ See [`rocketDynamicsStack`](@ref), [`rocketDynamics`](@ref),
 [`rocket_simple`](@ref)
 """
 function rocketDynamicsFull(r::rocket_simple, x0::Array{Float64, 1},
-                                 xN::Array{Float64, 1}, NSteps::Int64)
+                                 xN::Array{Float64, 1}, NSteps::Int64,
+                                 noEnd::Bool = false)
      if size(x0) != size(xN)
          error("x0 and xN must have the same size. " *
                  "Currently: x0 = $x0 and xN = $xN")
@@ -214,10 +216,17 @@ function rocketDynamicsFull(r::rocket_simple, x0::Array{Float64, 1},
     # Use the above function to determine the stacked matrix in the middle.
     AStacked, GStacked = rocketDynamicsStack(r, nDim, NSteps)
     I0 = [I spzeros(sizeRowsI, sizeCols - sizeRowsI)]
-    IN = [spzeros(sizeRowsI, sizeCols - sizeRowsI) I]
 
-    AFull = [I0; AStacked; IN]
-    BFull = [x0; GStacked; xN]
+    if noEnd
+        AFull = [I0; AStacked]
+        BFull = [x0; GStacked]
+    else
+        IN = [spzeros(sizeRowsI, sizeCols - sizeRowsI) I]
+        
+        AFull = [I0; AStacked; IN]
+        BFull = [x0; GStacked; xN]
+    end
+
     return AFull, BFull
 end
 

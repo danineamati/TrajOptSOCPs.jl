@@ -39,7 +39,7 @@ rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 5.0; 20.0; 4.0; -1.0; -15.0]
+const rocketStart = [2.0; 5.0; 20.0; 4.0; -1.0; -8.0]
 const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
@@ -50,13 +50,15 @@ const NSteps = 60
 initTraj = initializeHoverOnlyTraj(rocketStart, rocketEnd, uHover, NSteps)
 
 # Use a Linear Quadratic Regulator as the cost function
-const lqrQMat = 0.0 * Diagonal(I, size(rocketStart, 1))
+const lqrQMat = 10.0 * Diagonal(I, size(rocketStart, 1))
 r0 = 2.5
 const lqrRMat = r0 * Diagonal(I, Int64(size(rocketStart, 1) / 2))
 costFun = makeLQR_TrajRefTerminal(lqrQMat, lqrRMat, NSteps, initTraj)
 
 # Create the Dynamics Constraints
-const ADyn, BDyn = rocketDynamicsFull(rocket, rocketStart, rocketEnd, NSteps)
+excludeEnd = true
+const ADyn, BDyn = rocketDynamicsFull(rocket, rocketStart, rocketEnd,
+                                        NSteps, excludeEnd)
 dynConstraint = AL_AffineEquality(ADyn, BDyn)
 lambdaInit = -1 * ones(size(BDyn))
 
