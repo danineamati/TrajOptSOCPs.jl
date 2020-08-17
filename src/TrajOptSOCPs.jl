@@ -65,8 +65,8 @@ export ALPrimalNewtonMain, solParamPrint,
         rocketDynamicsFull
 
 # Export Helper Set-Up Functions
-export makeLQR_TrajReferenced, makeMaxThrustConstraint, makeGroundConstraint,
-        makeMaxAngleConstraint
+export makeLQR_TrajReferenced, makeLQR_TrajRefTerminal,
+        makeMaxThrustConstraint, makeGroundConstraint, makeMaxAngleConstraint
 
 # Export Evaluation functions
 export evalConstraints, evalGradConstraints, evalHessConstraints,
