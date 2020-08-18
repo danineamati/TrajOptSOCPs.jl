@@ -39,7 +39,7 @@ rocket = rocket_simple(mass, isp, grav, deltaTime)
 
 # in m
 # The Karman Line (100 km)
-const rocketStart = [2.0; 5.0; 20.0; 4.0; -1.0; -15.0]
+const rocketStart = [5.0; 5.0; 20.0; 0.0; 0.0; -15.0]
 const rocketEnd = [0.0; 0.0; 0.0; 0.0; 0.0; 0.0]#[-5.0; 0.0; 0.0; 0.0]
 
 uHover = mass * grav
@@ -51,7 +51,7 @@ initTraj = initializeTraj(rocketStart, rocketEnd, uHover, uHover, NSteps)
 
 # Use a Linear Quadratic Regulator as the cost function
 const lqrQMat = 0.0 * Diagonal(I, size(rocketStart, 1))
-const lqrRMat = 0.25 * Diagonal(I, Int64(size(rocketStart, 1) / 2))
+const lqrRMat = 0.025 * Diagonal(I, Int64(size(rocketStart, 1) / 2))
 costFun = makeLQR_TrajReferenced(lqrQMat, lqrRMat, NSteps, initTraj)
 
 # Create the Dynamics Constraints
@@ -170,7 +170,7 @@ end
 
 # Blocked so that it can be run independently after the fact
 if runplots && saveplots
-    header = "3DTest_SlantAngle_" * string(currSolveParams.maxOuterIters) *
+    header = "3DTest_SlantAngle2_" * string(currSolveParams.maxOuterIters) *
              "Outer_" * string(currSolveParams.maxNewtonSteps) * "Newton" *
              string(Int64(rocketStart[2 * nDim])) * "Vel" * "_"
     saveBulk(pltDict, header)
