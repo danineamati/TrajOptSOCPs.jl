@@ -26,12 +26,23 @@ struct LQR_QP <: objectiveLQR_abstract
 end
 
 """
-    LQR_QP(lqr_qp::LQR_QP, xRef)
+    LQR_QP_Referenced(lqr_qp::LQR_QP, xRef)
 
 An LQR what acts like a QP objective function, but with a reference
 trajectory.
 """
 struct LQR_QP_Referenced <: objectiveLQR_abstract
+    lqr_qp::LQR_QP
+    xRef
+end
+
+"""
+    LQR_QP_Ref_Terminal(lqr_qp::LQR_QP, xRef)
+
+An LQR what acts like a QP objective function, but with a reference
+trajectory.
+"""
+struct LQR_QP_Ref_Terminal <: objectiveLQR_abstract
     lqr_qp::LQR_QP
     xRef
 end
@@ -49,7 +60,7 @@ Pseudo-constructor for an LQR objective function (which is really an
 An LQR struct for a trajectory is one that holds the sparse matrix matching:
 
 ```math
-B_{QR} = [Q 0 0 0; 0 R 0 0; 0 0 Q 0; 0 0 0 R]
+B_{QR} = [Q 0 0 0 0; 0 R 0 0 0; 0 0 Q 0 0; 0 0 0 R 0; 0 0 0 0 Q]
 ```
 
 Where size corresponds to the size of the trajectory (or trajectory horizon).
@@ -101,6 +112,59 @@ function makeLQR_TrajReferenced(lqr::LQR_simple, NSteps::Int64, xRef)
     return LQR_QP_Referenced(baseLQR, xRef)
 end
 
+@doc raw"""
+    makeLQR_TrajTerminal(Q, R, NSteps::Int64)
+
+Pseudo-constructor for an LQR objective function (which is really an
+[`objectiveQ`](@ref) objective function).
+
+An LQR struct for a trajectory is one that holds the sparse matrix matching:
+
+```math
+B_{QR} = [0 0 0 0 0; 0 R 0 0 0; 0 0 0 0 0; 0 0 0 R 0; 0 0 0 0 Q]
+```
+
+Where size corresponds to the size of the trajectory (or trajectory horizon).
+
+```math
+f(y) = \frac{1}{2} \ y^{\top} * B_{QR} * y
+```
+
+See also: [`LQR_simple`](@ref) and [`LQR_QP`](@ref)
+"""
+function makeLQR_TrajTerminal(Q, R, NSteps::Int64)
+    QSize = size(Q, 1)
+    RSize = size(R, 1)
+    totSize = (QSize + RSize) * NSteps + QSize
+
+    # Initialize and empty sparse array
+    QRFull = spzeros(totSize, totSize)
+
+    rStart = 1 + QSize
+
+    for k in 1:NSteps
+        rEnd = rStart + RSize - 1
+
+        QRFull[rStart:rEnd, rStart:rEnd] = R
+
+        rStart += RSize + QSize
+    end
+    rStart -= QSize
+    rEnd = rStart + QSize - 1
+    QRFull[rStart:rEnd, rStart:rEnd] = Q
+
+    return LQR_QP(QRFull)
+end
+
+function makeLQR_TrajRefTerminal(Q, R, NSteps::Int64, xRef)
+    baseLQR = makeLQR_TrajTerminal(Q, R, NSteps)
+    return LQR_QP_Referenced(baseLQR, xRef)
+end
+
+function makeLQR_TrajRefTerminal(lqr::LQR_simple, NSteps::Int64, xRef)
+    baseLQR = makeLQR_TrajTerminal(lqr.Q, lqr.R, NSteps)
+    return LQR_QP_Referenced(baseLQR, xRef)
+end
 
 #######################################
 ###       Evaluate An LQR QP        ###
