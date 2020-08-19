@@ -46,14 +46,15 @@ uHover = mass * grav
 
 # Number of time steps to discretize the trajectory
 const NSteps = 60
-# Initialize the trajectory with a line
-initTraj = initializeHoverOnlyTraj(rocketStart, rocketEnd, uHover, NSteps)
+# Initialize the trajectory with a simple hover
+initTraj = initializeHoverOnlyTraj(rocketStart, uHover, NSteps)
+initTrajRef = initializeHoverOnlyTraj(rocketStart, rocketEnd, uHover, NSteps)
 
 # Use a Linear Quadratic Regulator as the cost function
 const lqrQMat = 10.0 * Diagonal(I, size(rocketStart, 1))
 r0 = 2.5
 const lqrRMat = r0 * Diagonal(I, Int64(size(rocketStart, 1) / 2))
-costFun = makeLQR_TrajRefTerminal(lqrQMat, lqrRMat, NSteps, initTraj)
+costFun = makeLQR_TrajRefTerminal(lqrQMat, lqrRMat, NSteps, initTrajRef)
 
 # Create the Dynamics Constraints
 excludeEnd = true
