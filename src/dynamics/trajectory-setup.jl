@@ -59,7 +59,7 @@ function initializeTraj(x0::Array{Int64, 1}, xN::Array{Int64, 1},
 end
 
 """
-initializeTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
+    initializeTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
                u0::Array{Float64, 1}, uN::Array{Float64, 1},
                NSteps::Int64)
 
@@ -119,7 +119,7 @@ function initializeTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
 end
 
 """
-initializeHoverOnlyTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
+    initializeHoverOnlyTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
                         uHover::Array{Float64, 1}, NSteps::Int64)
 
 Initializes the full `XU` vector (see example below) that hovers at the initial
@@ -164,7 +164,7 @@ function initializeHoverOnlyTraj(x0::Array{Float64, 1}, xN::Array{Float64, 1},
 end
 
 """
-initializeHoverOnlyTraj(x0::Array{Float64, 1}, uHover::Array{Float64, 1},
+    initializeHoverOnlyTraj(x0::Array{Float64, 1}, uHover::Array{Float64, 1},
                             NSteps::Int64)
 
 Initializes the full `XU` vector (see example below) that hovers at the initial

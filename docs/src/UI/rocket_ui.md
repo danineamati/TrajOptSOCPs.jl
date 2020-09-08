@@ -17,7 +17,11 @@ rocket mass" units). The gravity vector should match the problem dimensionality.
 In the example below, the gravity vector is two dimensional and pointed in the
 negative "y" direction.
 
-```@example
+```@setup general
+using LinearAlgebra, TrajOptSOCPs
+```
+
+```@example general
 mass = 1
 isp = 1
 grav = [0; -9.81]
@@ -43,7 +47,7 @@ nothing #hide
 
 We can also initialize a base thrust, which is most simply the hover thrust.
 ```@example
-mass = 1; grav = 1; #hide
+mass = 1; grav = 1; # hide
 uHover = mass * grav
 nothing #hide
 ```
@@ -57,7 +61,11 @@ nothing #hide
 
 With the information above, we now have the information to build a guess
 trajectory:
-```@example
+```@example general
+const rocketStart = [2.0; 20.0; 0.0; -15.0] # hide
+const rocketEnd = [0.0; 0.0; 0.0; 0.0] # hide
+uHover = [0.0, -10.0] # hide
+const NSteps = 60 # hide
 initTraj = initializeTraj(rocketStart, rocketEnd, uHover, uHover, NSteps)
 ```
 
