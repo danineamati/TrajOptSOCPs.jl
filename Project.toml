@@ -11,7 +11,7 @@ LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
-Distributions = "0.23"
+Distributions = "0.23, 0.24"
 Documenter = "0.25"
 DocumenterTools = "0.1"
 julia = "1"
